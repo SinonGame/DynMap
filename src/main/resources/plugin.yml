@@ -1,0 +1,5 @@
+name: DynMap
+main: club.guidelight.DynmapPlugin
+version: "0.0.1"
+author: GuideLight Studio
+api: ["1.0.8"]
