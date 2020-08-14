@@ -12,11 +12,11 @@ import org.dynmap.utils.MapChunkCache;
 import org.dynmap.utils.Polygon;
 import org.dynmap.utils.TileFlags;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
+import java.util.List;
 
 import static cn.nukkit.permission.DefaultPermissions.registerPermission;
 
@@ -179,6 +179,7 @@ public class NukkitLevel extends DynmapWorld {
         if (env == Level.DIMENSION_THE_END){
             return "the_end";
         }
+        return "normal";
     }
     /**
      * Get map chunk cache for world
@@ -186,7 +187,7 @@ public class NukkitLevel extends DynmapWorld {
     @Override
     public MapChunkCache getChunkCache(List<DynmapChunk> chunks) {
         if(isLoaded()) {
-            return NukkitVersionHelper.getChunkCache(this, chunks);
+            return NukkitVersionHelper.helper.getChunkCache(this, chunks);
         }
         else {
             return null;
@@ -204,7 +205,8 @@ public class NukkitLevel extends DynmapWorld {
         if (world == null) return -1;
         int cnt = 0;
         // Mark loaded chunks
-        for(Chunk c : world.getLoadedChunks()) {
+
+        for(Chunk c : world.getPlayers().) {
             map.setFlag(c.getX(), c.getZ(), true);
             cnt++;
         }
@@ -253,7 +255,7 @@ public class NukkitLevel extends DynmapWorld {
     @Override
     public Polygon getWorldBorder() {
         if (world != null) {
-            lastBorder = NukkitVersionHelper.getWorldBorder(world);
+            lastBorder = NukkitVersionHelper.helper.getWorldBorder(world);
         }
         return lastBorder;
     }

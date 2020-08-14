@@ -126,4 +126,5 @@ public interface ChunkSnapshot {
      * @return true if empty, false if not
      */
     boolean isSectionEmpty(int sy);
+
 }

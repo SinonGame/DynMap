@@ -50,28 +50,28 @@ public abstract class NukkitVersionHelper extends PluginBase {
     /**
      * Get ID from biomebase
      */
-    public static int getBiomeBaseID(Object bb) {
+    public int getBiomeBaseID(Object bb) {
         return 0;
     }
 
     /**
      * Get unload queue for given NMS world
      */
-    public static Object getUnloadQueue(Level world) {
+    public Object getUnloadQueue(Level world) {
         return null;
     }
 
     /**
      * For testing unload queue for presence of givne chunk
      */
-    public static boolean isInUnloadQueue(Object unloadqueue, int x, int z) {
+    public boolean isInUnloadQueue(Object unloadqueue, int x, int z) {
         return false;
     }
 
     /**
      * Read raw biome ID from snapshot
      */
-    public static Object[] getBiomeBaseFromSnapshot(ChunkSnapshot css) {
+    public Object[] getBiomeBaseFromSnapshot(ChunkSnapshot css) {
         return new Object[0];
     }
     /**
@@ -90,35 +90,35 @@ public abstract class NukkitVersionHelper extends PluginBase {
     /**
      * Get X coordinate of tile entity
      */
-    public static int getTileEntityX(Object te) {
+    public int getTileEntityX(Object te) {
         return 0;
     }
 
     /**
      * Get Y coordinate of tile entity
      */
-    public static int getTileEntityY(Object te) {
+    public int getTileEntityY(Object te) {
         return 0;
     }
 
     /**
      * Get Z coordinate of tile entity
      */
-    public static int getTileEntityZ(Object te) {
+    public int getTileEntityZ(Object te) {
         return 0;
     }
 
     /**
      * Read tile entity NBT
      */
-    public static Object readTileEntityNBT(Object te) {
+    public Object readTileEntityNBT(Object te) {
         return null;
     }
 
     /**
      * Get field value from NBT compound
      */
-    public static Object getFieldValue(Object nbt, String field) {
+    public Object getFieldValue(Object nbt, String field) {
         return null;
     }
 
@@ -145,7 +145,7 @@ public abstract class NukkitVersionHelper extends PluginBase {
     /**
      * Get world border
      */
-    public static Polygon getWorldBorder(Level world) { return null; }
+    public Polygon getWorldBorder(Level world) { return null; }
     /**
      * Test if broken unloadChunk
      */

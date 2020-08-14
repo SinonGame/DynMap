@@ -46,7 +46,7 @@ public class MapChunkCacheClassic extends AbstractMapChunkCache {
         }
         @Override
         public final Object[] getBiomeBaseFromSnapshot() {
-            return NukkitVersionHelper.getBiomeBaseFromSnapshot(ss);
+            return NukkitVersionHelper.helper.getBiomeBaseFromSnapshot(ss);
         }
     }
 

@@ -3,8 +3,8 @@ package club.guidelight.helper;
 import cn.nukkit.ChunkSnapshot;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.biome.Biome;
+import cn.nukkit.level.biome.impl.plains.PlainsBiome;
 import cn.nukkit.level.format.Chunk;
-import cn.nukkit.level.generator.Normal;
 import org.dynmap.DynmapChunk;
 import org.dynmap.DynmapCore;
 import org.dynmap.DynmapWorld;
@@ -179,7 +179,7 @@ public class AbstractMapChunkCache extends MapChunkCache {
                         bm = BiomeMap.NULL;
                     }
                     else if(biomebase != null) {
-                        bm = BiomeMap.byBiomeID(NukkitVersionHelper.getBiomeBaseID(biomebase[bz << 4 | bx]));
+                        bm = BiomeMap.byBiomeID(NukkitVersionHelper.helper.getBiomeBaseID(biomebase[bz << 4 | bx]));
                     }
                     else {
                         Biome bb = snap.getBiome(bx, bz);
@@ -727,13 +727,15 @@ public class AbstractMapChunkCache extends MapChunkCache {
         isSectionNotEmpty = new boolean[snapcnt][];
     }
 
-    public abstract Snapshot wrapChunkSnapshot(ChunkSnapshot css);
+    public Snapshot wrapChunkSnapshot(ChunkSnapshot css) {
+        return null;
+    }
 
     // Load chunk snapshots
     public int loadChunks(int max_to_load) {
         if(dw.isLoaded() == false)
             return 0;
-        Object queue = NukkitVersionHelper.getUnloadQueue(w);
+        Object queue = NukkitVersionHelper.helper.getUnloadQueue(w);
 
         int cnt = 0;
         if(iterator == null)
@@ -793,7 +795,7 @@ public class AbstractMapChunkCache extends MapChunkCache {
             boolean didload = false;
             boolean isunloadpending = false;
             if (queue != null) {
-                isunloadpending = NukkitVersionHelper.isInUnloadQueue(queue, chunk.x, chunk.z);
+                isunloadpending = NukkitVersionHelper.helper.isInUnloadQueue(queue, chunk.x, chunk.z);
             }
             if (isunloadpending) {  /* Workaround: can't be pending if not loaded */
                 wasLoaded = true;
@@ -812,7 +814,7 @@ public class AbstractMapChunkCache extends MapChunkCache {
 
                 Chunk c = (Chunk) w.getChunk(chunk.x, chunk.z);   /* Get the chunk */
                 /* Get inhabited ticks count */
-                inhabited_ticks = NukkitVersionHelper.getInhabitedTicks(c);
+                inhabited_ticks = NukkitVersionHelper.helper.getInhabitedTicks(c);
                 if(!vis) {
                     if(hidestyle == HiddenChunkStyle.FILL_STONE_PLAIN)
                         ss = STONE;
@@ -828,20 +830,21 @@ public class AbstractMapChunkCache extends MapChunkCache {
                         ss = wrapChunkSnapshot(css);
                         /* Get tile entity data */
                         List<Object> vals = new ArrayList<Object>();
-                        Map<?,?> tileents = NukkitVersionHelper.getTileEntitiesForChunk(c);
+                        Map<?,?> tileents = NukkitVersionHelper.helper.getTileEntitiesForChunk(c);
                         for(Object t : tileents.values()) {
-                            int te_x = NukkitVersionHelper.getTileEntityX(t);
-                            int te_y = NukkitVersionHelper.getTileEntityY(t);
-                            int te_z = NukkitVersionHelper.getTileEntityZ(t);
+                            int te_x = NukkitVersionHelper.helper.getTileEntityX(t);
+                            int te_y = NukkitVersionHelper.helper.getTileEntityY(t);
+                            int te_z = NukkitVersionHelper.helper.getTileEntityZ(t);
                             int cx = te_x & 0xF;
                             int cz = te_z & 0xF;
                             String[] te_fields = HDBlockModels.getTileEntityFieldsNeeded(ss.getBlockType(cx, te_y, cz));
                             if(te_fields != null) {
-                                Object nbtcompound = NukkitVersionHelper.readTileEntityNBT(t);
+                                Object nbtcompound = NukkitVersionHelper.helper.readTileEntityNBT(t);
 
                                 vals.clear();
+
                                 for(String id: te_fields) {
-                                    Object val = NukkitVersionHelper.getFieldValue(nbtcompound, id);
+                                    Object val = NukkitVersionHelper.helper.getFieldValue(nbtcompound, id);
                                     if(val != null) {
                                         vals.add(id);
                                         vals.add(val);
@@ -880,12 +883,12 @@ public class AbstractMapChunkCache extends MapChunkCache {
                      * by the MC base server is 21x21 (or about a 160 block radius).
                      * Also, if we did generate it, need to save it */
                     if (w.isChunkInUse(chunk.x, chunk.z) == false) {
-                        if (BukkitVersionHelper.helper.isUnloadChunkBroken()) {
+                        if (NukkitVersionHelper.helper.isUnloadChunkBroken()) {
                             // Give up on broken unloadChunk API - lets see if this works
                             w.unloadChunkRequest(chunk.x, chunk.z);
                         }
                         else {
-                            BukkitVersionHelper.helper.unloadChunkNoSave(w, c, chunk.x, chunk.z);
+                            NukkitVersionHelper.helper.unloadChunkNoSave(w, c, chunk.x, chunk.z);
                         }
                     }
                     endChunkLoad(startTime, ChunkStats.UNLOADED_CHUNKS);
@@ -973,7 +976,7 @@ public class AbstractMapChunkCache extends MapChunkCache {
      * Get cache iterator
      */
     public MapIterator getIterator(int x, int y, int z) {
-        if(w.getEnvironment().toString().equals("THE_END"))
+        if(w.getDimension()==2)
             return new OurEndMapIterator(x, y, z);
         return new BasetMapIterator(x, y, z);
     }
@@ -1024,7 +1027,7 @@ public class AbstractMapChunkCache extends MapChunkCache {
         if ((id >= 0) && (id < biome_by_id.length)) {
             return biome_by_id[id];
         }
-        return Biome.PLAIN;
+        return PlainsBiome;
     }
 
     static {
