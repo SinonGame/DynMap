@@ -1,6 +1,7 @@
 package cn.nukkit;
 
 import cn.nukkit.level.biome.Biome;
+import cn.nukkit.level.format.Chunk;
 
 /**
  * Represents a static, thread-safe snapshot of chunk of blocks.

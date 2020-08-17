@@ -4,8 +4,20 @@ import cn.nukkit.Player;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.plugin.PluginBase;
+import javafx.event.EventType;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.cacheddata.CachedPermissionData;
+import net.luckperms.api.context.ContextManager;
+import net.luckperms.api.context.ImmutableContextSet;
+import net.luckperms.api.query.QueryOptions;
 
 public class NukkitHelper extends PluginBase {
+    /*
+    Luckperm
+    */
+    LuckPerms luckpermapi = LuckPermsProvider.get();
+
     public Player[] getOnlinePlayers(){
         Player[] players = this.getServer().getOnlinePlayers().values().toArray(new Player[] {});
         return players;

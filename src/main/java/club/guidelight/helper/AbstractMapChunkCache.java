@@ -5,6 +5,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.biome.Biome;
 import cn.nukkit.level.biome.impl.plains.PlainsBiome;
 import cn.nukkit.level.format.Chunk;
+import cn.nukkit.ChunkSnapshotPatch;
 import org.dynmap.DynmapChunk;
 import org.dynmap.DynmapCore;
 import org.dynmap.DynmapWorld;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-public class AbstractMapChunkCache extends MapChunkCache {
+public abstract class AbstractMapChunkCache extends MapChunkCache {
     // Reduced interface for snapshots
     public interface Snapshot {
         public DynmapBlockState getBlockType(int x, int y, int z);
@@ -731,7 +732,10 @@ public class AbstractMapChunkCache extends MapChunkCache {
         return null;
     }
 
-    // Load chunk snapshots
+    /*
+     Load chunk snapshots
+     */
+
     public int loadChunks(int max_to_load) {
         if(dw.isLoaded() == false)
             return 0;
@@ -826,7 +830,12 @@ public class AbstractMapChunkCache extends MapChunkCache {
                 else {
                     ChunkSnapshot css;
                     if(blockdata || highesty) {
-                        css = c.getChunkSnapshot(highesty, biome, biomeraw);
+                        /*
+                        No idea how to snapshot chunks
+                        Maybe Clone?
+                        Just cast it now to see if works
+                         */
+                        css = (ChunkSnapshot) c;
                         ss = wrapChunkSnapshot(css);
                         /* Get tile entity data */
                         List<Object> vals = new ArrayList<Object>();
@@ -858,7 +867,11 @@ public class AbstractMapChunkCache extends MapChunkCache {
                         }
                     }
                     else {
-                        css = w.getEmptyChunkSnapshot(chunk.x, chunk.z, biome, biomeraw);
+                        /*
+                        No idea what EmptyChunkSnapshot is
+                        Just cast it to see if works now
+                         */
+                        css = (ChunkSnapshot) w.getChunk(chunk.x, chunk.z);
                         ss = wrapChunkSnapshot(css);
                     }
                     if(ss != null) {
@@ -923,6 +936,7 @@ public class AbstractMapChunkCache extends MapChunkCache {
 
         return cnt;
     }
+
     /**
      * Test if done loading
      */
@@ -1027,28 +1041,28 @@ public class AbstractMapChunkCache extends MapChunkCache {
         if ((id >= 0) && (id < biome_by_id.length)) {
             return biome_by_id[id];
         }
-        return PlainsBiome;
+        return Biome.getBiome("PLAINS");
     }
-
-    static {
-        Biome[] b = Biome.values();
-        BiomeMap[] bm = BiomeMap.values();
-        biome_to_bmap = new BiomeMap[1024];
-        biome_by_id = new Biome[1024];
-        Arrays.fill(biome_by_id,  Biome.PLAINS);
-        for(int i = 0; i < biome_to_bmap.length; i++) {
-            biome_to_bmap[i] = BiomeMap.NULL;
-        }
-        for(int i = 0; i < b.length; i++) {
-            String bs = b[i].toString();
-            for(int j = 0; j < bm.length; j++) {
-                if(bm[j].toString().equals(bs)) {
-                    biome_to_bmap[b[i].ordinal()] = bm[j];
-                    biome_by_id[j] = b[i];
-                    break;
-                }
-            }
-        }
-    }
+//
+//    static {
+//        Biome[] b = Biome.values();
+//        BiomeMap[] bm = BiomeMap.values();
+//        biome_to_bmap = new BiomeMap[1024];
+//        biome_by_id = new Biome[1024];
+//        Arrays.fill(biome_by_id,  Biome.PLAINS);
+//        for(int i = 0; i < biome_to_bmap.length; i++) {
+//            biome_to_bmap[i] = BiomeMap.NULL;
+//        }
+//        for(int i = 0; i < b.length; i++) {
+//            String bs = b[i].toString();
+//            for(int j = 0; j < bm.length; j++) {
+//                if(bm[j].toString().equals(bs)) {
+//                    biome_to_bmap[b[i].ordinal()] = bm[j];
+//                    biome_by_id[j] = b[i];
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
 }

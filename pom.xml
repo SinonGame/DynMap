@@ -16,7 +16,10 @@
             <url>https://repo.nukkitx.com/maven-snapshots</url>
 
         </repository>
-
+        <repository>
+            <id>locale</id>
+            <url>file://C:/Users/AnonAlpha/.m2/repository/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -35,6 +38,12 @@
             <artifactId>DynmapCoreAPI</artifactId>
             <version>3.1-SNAPSHOT</version>
         </dependency>
+            <dependency>
+                <groupId>net.luckperms</groupId>
+                <artifactId>api</artifactId>
+                <version>5.1</version>
+                <scope>provided</scope>
+            </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -58,8 +67,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>7</source>
-                    <target>7</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
         </plugins>

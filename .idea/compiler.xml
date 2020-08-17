@@ -11,7 +11,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="DynMap" target="1.5" />
-      <module name="DynmapPlugin" target="7" />
+      <module name="DynmapPlugin" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

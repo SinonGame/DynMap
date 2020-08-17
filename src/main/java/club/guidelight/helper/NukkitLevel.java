@@ -1,7 +1,9 @@
 package club.guidelight.helper;
 
+import cn.nukkit.Player;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
+import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.format.anvil.Chunk;
 import cn.nukkit.level.generator.Normal;
 import cn.nukkit.permission.Permission;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static cn.nukkit.permission.DefaultPermissions.registerPermission;
 
@@ -205,8 +208,15 @@ public class NukkitLevel extends DynmapWorld {
         if (world == null) return -1;
         int cnt = 0;
         // Mark loaded chunks
-
-        for(Chunk c : world.getPlayers().) {
+        Map<Long, Player> players = world.getPlayers();
+        Chunk[] loadedchunks = new Chunk[0];
+        //Workaround for getLoadedChunks
+        int time =0;
+        for (Player player : players.values()){
+            loadedchunks[time] = (Chunk) player.getChunk();
+            time++;
+        }
+        for(Chunk c : loadedchunks) {
             map.setFlag(c.getX(), c.getZ(), true);
             cnt++;
         }
